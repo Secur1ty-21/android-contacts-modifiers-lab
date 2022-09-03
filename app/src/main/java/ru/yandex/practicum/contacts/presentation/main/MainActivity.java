@@ -28,7 +28,6 @@ import ru.yandex.practicum.contacts.model.ContactType;
 import ru.yandex.practicum.contacts.presentation.filter.FilterContactTypeDialogFragment;
 import ru.yandex.practicum.contacts.presentation.sort.SortDialogFragment;
 import ru.yandex.practicum.contacts.presentation.main.model.MenuClick;
-import ru.yandex.practicum.contacts.presentation.sort.model.SortType;
 import ru.yandex.practicum.contacts.ui.widget.DividerItemDecoration;
 import ru.yandex.practicum.contacts.utils.widget.EditTextUtils;
 
@@ -130,17 +129,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUiState(MainUiState uiState) {
-        final Boolean finishActivity = uiState.actions.finishActivity.data;
+        final Boolean finishActivity = uiState.getActions().finishActivity.data;
         if (finishActivity != null && finishActivity) {
             finish();
             return;
         }
-        binding.searchLayout.getRoot().setVisibility(uiState.searchVisibility ? View.VISIBLE : View.GONE);
-        binding.searchLayout.resetButton.setVisibility(uiState.resetSearchButtonVisibility ? View.VISIBLE : View.GONE);
-        if (uiState.actions.showSortTypeDialog.data != null) {
-            showSortDialog(uiState.actions.showSortTypeDialog.data);
+        binding.searchLayout.getRoot().setVisibility(uiState.isSearchVisibility() ? View.VISIBLE : View.GONE);
+        binding.searchLayout.resetButton.setVisibility(uiState.isResetSearchButtonVisibility() ? View.VISIBLE : View.GONE);
+        if (uiState.getActions().showSortTypeDialog.data != null) {
+            showSortDialog(uiState.getActions().showSortTypeDialog.data);
         }
-        final Set<ContactType> filterContactTypes = uiState.actions.showFilterContactTypeDialog.data;
+        final Set<ContactType> filterContactTypes = uiState.getActions().showFilterContactTypeDialog.data;
         if (filterContactTypes != null && filterContactTypes.size() > 0) {
             showFilterContactTypeDialog(filterContactTypes);
         }
@@ -148,9 +147,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateBadges(MainUiState uiState) {
-        updateBadge(uiState.menuBadges.sort, R.id.menu_sort);
-        updateBadge(uiState.menuBadges.filter, R.id.menu_filter);
-        updateBadge(uiState.menuBadges.search, R.id.menu_search);
+        updateBadge(uiState.getMenuBadges().sort, R.id.menu_sort);
+        updateBadge(uiState.getMenuBadges().filter, R.id.menu_filter);
+        updateBadge(uiState.getMenuBadges().search, R.id.menu_search);
     }
 
     private void updateBadge(MainUiState.MenuBadge badge, @IdRes int menuItemId) {
